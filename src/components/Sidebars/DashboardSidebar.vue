@@ -1,5 +1,5 @@
 <template>
-	
+
 	<!-- Main Sidebar -->
 	<a-layout-sider
 		collapsible
@@ -40,6 +40,21 @@
 						</a-menu-item>
 					</a-menu-item-group>
 				</a-sub-menu>
+        <a-sub-menu key="orders" style="padding: 0;">
+					<span slot="title">
+						<span class="icon">
+							<a-icon type="dashboard" theme="filled" class="m-0" />
+						</span>
+						<span class="label">주문관리</span>
+					</span>
+          <a-menu-item-group>
+            <a-menu-item>
+              <router-link to="/orders/orders-list">
+                <span class="label">주문관리</span>
+              </router-link>
+            </a-menu-item>
+          </a-menu-item-group>
+        </a-sub-menu>
 				<a-menu-item class="menu-item-header">
 					Pages
 				</a-menu-item>
@@ -295,13 +310,13 @@
 				type: Boolean,
 				default: false,
 			},
-			
+
 			// Main sidebar color.
 			sidebarColor: {
 				type: String,
 				default: "primary",
 			},
-			
+
 			// Main sidebar theme : light, white, dark.
 			sidebarTheme: {
 				type: String,

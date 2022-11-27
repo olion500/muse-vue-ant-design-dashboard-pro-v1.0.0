@@ -40,6 +40,17 @@ let routes = [
 		component: () => import('../views/Dashboards/CRM.vue'),
 	},
 	{
+		path: '/orders/orders-list',
+		name: 'Orders List',
+		layout: "dashboard",
+		meta: {
+			title: 'Orders List',
+			sidebarMap: ['order', 'orders-list'],
+			breadcrumbs: ['Orders', 'Orders List'],
+		},
+		component: () => import('../views/Order/OrdersList.vue'),
+	},
+	{
 		path: '/pages/profile/profile-overview',
 		name: 'ProfileOverview',
 		layout: "dashboard",
