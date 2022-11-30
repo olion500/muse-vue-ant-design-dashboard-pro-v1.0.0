@@ -1,5 +1,5 @@
 <!--
-	This is the Billing page, it uses the dashboard layout in:
+	This is the Product page, it uses the dashboard layout in:
 	"./layouts/Dashboard.vue" .
  -->
 
@@ -8,27 +8,27 @@
 
     <a-row type="flex" :gutter="24">
 
-      <!-- Invoices Column -->
+      <!-- Product Column -->
       <a-col :span="24" :md="8" class="mb-24">
-        <p>{{selectedProduct}}</p>
 
-        <!-- Invoices Card -->
+        <!-- Products Card -->
         <CardProduct
             :data="productData"
+            v-on:selected="(item) => selectProduct(item)"
         ></CardProduct>
-        <!-- / Invoices Card -->
+        <!-- / Products Card -->
 
 
       </a-col>
-      <!-- / Invoices Column -->
+      <!-- / Products Column -->
 
-      <!-- Billing Info Column -->
+      <!-- Product Info Column -->
       <a-col :span="24" :md="16">
         <a-row type="flex" :gutter="24">
           <a-col :span="24" class="mb-24">
 
             <CardProductBasicInfo
-              :data="{title: 'asdf', description: 'fdsa'}"></CardProductBasicInfo>
+              :product="this.selectedProduct"></CardProductBasicInfo>
 
           </a-col>
           <a-col :span="24" class="mb-24">
@@ -40,7 +40,7 @@
           </a-col>
         </a-row>
       </a-col>
-      <!-- / Billing Info Column -->
+      <!-- / Product Info Column -->
 
 
 
@@ -68,7 +68,12 @@ const productData = [
     title: "편안한인식표",
     description: "이것은 설명 2"
   },
-] ;
+];
+
+let selectedProduct = {
+  title: '',
+  description: ''
+};
 
 export default ({
   components: {
@@ -83,8 +88,14 @@ export default ({
   data() {
     return {
       productData,
+      selectedProduct
     }
   },
+  methods: {
+    selectProduct(item) {
+      this.selectedProduct = item;
+    }
+  }
 })
 
 </script>

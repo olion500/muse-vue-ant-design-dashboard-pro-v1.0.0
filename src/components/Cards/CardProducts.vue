@@ -40,6 +40,7 @@ export default ({
       default: () => [],
     },
   },
+  emits: ['selected'],
   data() {
     return {
       selectedItem: null
@@ -48,6 +49,7 @@ export default ({
   methods: {
     select(item) {
       this.selectedItem = item;
+      this.$emit('selected', item);
     }
   }
 })
