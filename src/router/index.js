@@ -68,9 +68,20 @@ let routes = [
 		meta: {
 			title: 'Estimate Sheet List',
 			sidebarMap: ['estimate', 'estimate-sheet-list'],
-			breadcrumbs: ['Estimate', 'Estimate-sheet'],
+			breadcrumbs: ['Estimate', 'Estimate-sheet-list'],
 		},
 		component: () => import('../views/EstimateSheet/EstimateSheets.vue'),
+	},
+	{
+		path: '/estimate/new-estimate-sheet',
+		name: 'New Estimate Sheet',
+		layout: "dashboard",
+		meta: {
+			title: 'New Estimate Sheet',
+			sidebarMap: ['estimate', 'new-estimate-sheet'],
+			breadcrumbs: ['Estimate', 'new-estimate-sheet'],
+		},
+		component: () => import('../views/EstimateSheet/NewEstimateSheet.vue'),
 	},
 	{
 		path: '/system/health',

@@ -83,6 +83,11 @@
                 <span class="label">견적관리</span>
               </router-link>
             </a-menu-item>
+            <a-menu-item>
+              <router-link to="/estimate/new-estimate-sheet">
+                <span class="label">견적추가</span>
+              </router-link>
+            </a-menu-item>
           </a-menu-item-group>
         </a-sub-menu>
         <a-sub-menu key="system" style="padding: 0;">
