@@ -10,7 +10,9 @@
 		<!-- Estimate Sheet List header -->
 		<a-row type="flex" :gutter="24">
 			<a-col :span="12" class="mb-24">
-				<a-button type="primary">견적서 추가</a-button>
+        <router-link to="/estimate/new-estimate-sheet" custom v-slot="{ navigate }">
+          <a-button type="primary" @click="navigate">견적서 추가</a-button>
+        </router-link>
 			</a-col>
 			<a-col :span="12" class="mb-24 text-right" hidden>
 				<a-button @click="csvExport(csvData)" class="ml-15">
@@ -64,15 +66,15 @@
 <script>
 
 	// Sorting function for string attibutes.
-	let stringSorter = function(a, b, attr) {
+	import axios from "axios";
+
+  let stringSorter = function(a, b, attr) {
 		if (a[attr] < b[attr])
 			return -1;
 		if ( a[attr] > b[attr])
 			return 1;
 		return 0;
 	}
-
-
 
 	// Table columns
 	const columns = [
@@ -125,23 +127,6 @@
     },
 	];
 
-	// Table rows
-  const data = [
-    {
-      "estimateNo": "NFN-220102",
-      "name": "인식표",
-      "estimatedAt": "2022-12-05",
-      "companyName": "네오펫",
-      "companyId": "717-46-00450",
-      "companyCEO": "김홍일",
-      "totalCost": 1240000,
-      "url": "www.naver.com",
-      "id": 1,
-      "createdAt": "2022-12-05T07:36:16.410Z",
-      "updatedAt": "2022-12-05T07:36:16.410Z"
-    }
-  ]
-
 	export default {
 		data() {
 			return {
@@ -150,7 +135,7 @@
 				columns,
 
 				// Table rows
-				data,
+				data: [],
 
 				// Table page size
 				pageSize: 10,
@@ -163,6 +148,18 @@
 
 			}
 		},
+    created() {
+      // watch the params of the route to fetch the data again
+      this.$watch(
+          () => this.$route.params,
+          () => {
+            this.fetchData()
+          },
+          // fetch the data when the view is created and the data is
+          // already being observed
+          { immediate: true }
+      )
+    },
 		computed: {
 
 			// CSV data array
@@ -178,6 +175,13 @@
 			},
 		},
 		methods: {
+
+      fetchData() {
+        axios.get('/estimate-sheets')
+            .then((res) => {
+              this.data = res.data;
+            });
+      },
 
 			// Event listener for input change on table search field.
 			onSearchChange() {
