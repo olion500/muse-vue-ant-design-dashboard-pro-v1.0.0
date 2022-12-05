@@ -176,7 +176,8 @@
 		methods: {
 
       fetchData() {
-        axios.get('/estimate-sheets')
+        const url = `${process.env.VUE_APP_API_HOST}/estimate-sheets`;
+        axios.get(url)
             .then((res) => {
               this.data = res.data;
             });
