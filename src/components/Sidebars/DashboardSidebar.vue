@@ -45,7 +45,7 @@
 						<span class="icon">
 							<a-icon type="dashboard" theme="filled" class="m-0" />
 						</span>
-						<span class="label">주문관리</span>
+						<span class="label">주문</span>
 					</span>
           <a-menu-item-group>
             <a-menu-item>
@@ -60,7 +60,7 @@
 						<span class="icon">
 							<a-icon type="dollar-circle" theme="filled" class="m-0" />
 						</span>
-						<span class="label">상품관리</span>
+						<span class="label">상품</span>
 					</span>
           <a-menu-item-group>
             <a-menu-item>
@@ -75,7 +75,7 @@
 						<span class="icon">
 							<a-icon type="sliders" theme="filled" class="m-0" />
 						</span>
-						<span class="label">시스템 관리</span>
+						<span class="label">시스템</span>
 					</span>
           <a-menu-item-group>
             <a-menu-item>
