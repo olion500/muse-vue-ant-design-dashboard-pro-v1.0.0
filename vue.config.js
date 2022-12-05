@@ -5,6 +5,12 @@ module.exports = {
 			'^/kpiLv1': {
 				target: "http://www.ssf-kpi.kr:8080/",
 			},
+			'^/kpiLv2': {
+				target: "http://www.ssf-kpi.kr:8080/",
+			},
+			'^/kpiLv3': {
+				target: "http://www.ssf-kpi.kr:8080/",
+			},
 		},
 	},
 	chainWebpack: config => {
