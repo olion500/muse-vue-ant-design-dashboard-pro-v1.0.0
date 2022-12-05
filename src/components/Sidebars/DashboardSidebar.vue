@@ -70,6 +70,21 @@
             </a-menu-item>
           </a-menu-item-group>
         </a-sub-menu>
+        <a-sub-menu key="estimate-sheet" style="padding: 0;">
+					<span slot="title">
+						<span class="icon">
+							<a-icon type="reconciliation" theme="filled" class="m-0" />
+						</span>
+						<span class="label">견적</span>
+					</span>
+          <a-menu-item-group>
+            <a-menu-item>
+              <router-link to="/estimate/estimate-sheet-list">
+                <span class="label">견적관리</span>
+              </router-link>
+            </a-menu-item>
+          </a-menu-item-group>
+        </a-sub-menu>
         <a-sub-menu key="system" style="padding: 0;">
 					<span slot="title">
 						<span class="icon">

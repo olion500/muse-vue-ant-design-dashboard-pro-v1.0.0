@@ -62,6 +62,17 @@ let routes = [
 		component: () => import('../views/Products/ProductsList.vue'),
 	},
 	{
+		path: '/estimate/estimate-sheet-list',
+		name: 'Estimate Sheet List',
+		layout: "dashboard",
+		meta: {
+			title: 'Estimate Sheet List',
+			sidebarMap: ['estimate', 'estimate-sheet-list'],
+			breadcrumbs: ['Estimate', 'Estimate-sheet'],
+		},
+		component: () => import('../views/EstimateSheet/EstimateSheets.vue'),
+	},
+	{
 		path: '/system/health',
 		name: 'System health',
 		layout: "dashboard",
