@@ -64,10 +64,9 @@
 </template>
 
 <script>
-
-	// Sorting function for string attibutes.
 	import axios from "axios";
 
+  // Sorting function for string attibutes.
   let stringSorter = function(a, b, attr) {
 		if (a[attr] < b[attr])
 			return -1;
