@@ -1,5 +1,8 @@
 module.exports = {
 	runtimeCompiler: true,
+	devServer: {
+		proxy: "http://3.39.241.52:3000/",
+	},
 	chainWebpack: config => {
 		config
 			.plugin('html')
