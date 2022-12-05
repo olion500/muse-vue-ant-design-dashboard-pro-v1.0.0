@@ -70,6 +70,21 @@
             </a-menu-item>
           </a-menu-item-group>
         </a-sub-menu>
+        <a-sub-menu key="system" style="padding: 0;">
+					<span slot="title">
+						<span class="icon">
+							<a-icon type="sliders" theme="filled" class="m-0" />
+						</span>
+						<span class="label">시스템 관리</span>
+					</span>
+          <a-menu-item-group>
+            <a-menu-item>
+              <router-link to="/system/health">
+                <span class="label">데이터 전송</span>
+              </router-link>
+            </a-menu-item>
+          </a-menu-item-group>
+        </a-sub-menu>
 				<a-menu-item class="menu-item-header">
 					Pages
 				</a-menu-item>

@@ -62,6 +62,20 @@ let routes = [
 		component: () => import('../views/Products/ProductsList.vue'),
 	},
 	{
+		path: '/system/health',
+		name: 'System health',
+		layout: "dashboard",
+		meta: {
+			title: 'System health',
+			sidebarMap: ['system', 'health'],
+			breadcrumbs: ['System', 'Health'],
+		},
+		component: () => import('../views/System/SystemHealth.vue'),
+	},
+	
+	
+	// TODO: remove below routes.
+	{
 		path: '/pages/profile/profile-overview',
 		name: 'ProfileOverview',
 		layout: "dashboard",
