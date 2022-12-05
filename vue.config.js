@@ -1,7 +1,11 @@
 module.exports = {
 	runtimeCompiler: true,
 	devServer: {
-		proxy: "http://3.39.241.52:3000/",
+		proxy: {
+			'^/kpiLv1': {
+				target: "http://www.ssf-kpi.kr:8080/",
+			},
+		},
 	},
 	chainWebpack: config => {
 		config

@@ -19,10 +19,10 @@
           <template>
             <a-form :form="formLevel1" @submit="handleSubmitLevel1">
               <a-form-item label="발생일자">
-                <a-input placeholder="YYYYMMDD" />
+                <a-input v-model="level1_createdAt" placeholder="YYYYMMDD" />
               </a-form-item>
               <a-form-item label="전송일시">
-                <a-input placeholder="YYYYMMDD" />
+                <a-input v-model="level1_sentAt" placeholder="YYYYMMDD" />
               </a-form-item>
               <a-form-item>
                 <a-button type="primary" html-type="submit">
@@ -127,21 +127,38 @@
 
 <script>
 
+import axios from "axios";
+
 export default {
   data() {
     return {
-      formLevel1: this.$form.createForm(this),
-      formLevel2: this.$form.createForm(this),
-      formLevel3: this.$form.createForm(this),
+      level1_createdAt: '',
+      level1_sentAt: '',
     };
+  },
+  beforeCreate() {
+    this.formLevel1 = this.$form.createForm(this);
+    this.formLevel2 = this.$form.createForm(this);
+    this.formLevel3 = this.$form.createForm(this);
   },
   methods: {
     handleSubmitLevel1(e) {
       e.preventDefault();
-      this.formLevel1.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values);
-        }
+
+      const data = {
+        'KPILEVEL1': [
+              {
+                kpiCertKey: process.env.VUE_APP_KPI_CERT_KEY,
+                ocrDttm: this.level1_createdAt,
+                systmOprYn: 'Y',
+                trsDttm: this.level1_sentAt,
+             }
+            ]
+      };
+      console.log(JSON.stringify(data));
+      axios.post('/kpiLv1/kpiLv1InsertTst', data).then((res) => {
+        console.log(res.status);
+        console.log(res);
       });
     },
   },
