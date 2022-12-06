@@ -84,6 +84,17 @@ let routes = [
 		component: () => import('../views/EstimateSheet/NewEstimateSheet.vue'),
 	},
 	{
+		path: '/stock/stock-list',
+		name: 'Stock List',
+		layout: "dashboard",
+		meta: {
+			title: 'Stock List',
+			sidebarMap: ['stock', 'stock-list'],
+			breadcrumbs: ['Stock', 'Stock-List'],
+		},
+		component: () => import('../views/Stock/Stocks.vue'),
+	},
+	{
 		path: '/system/health',
 		name: 'System health',
 		layout: "dashboard",

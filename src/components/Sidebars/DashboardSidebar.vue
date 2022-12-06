@@ -70,6 +70,21 @@
             </a-menu-item>
           </a-menu-item-group>
         </a-sub-menu>
+        <a-sub-menu key="stock" style="padding: 0;">
+					<span slot="title">
+						<span class="icon">
+							<a-icon type="reconciliation" theme="filled" class="m-0" />
+						</span>
+						<span class="label">재고</span>
+					</span>
+          <a-menu-item-group>
+            <a-menu-item>
+              <router-link to="/stock/stock-list">
+                <span class="label">재고관리</span>
+              </router-link>
+            </a-menu-item>
+          </a-menu-item-group>
+        </a-sub-menu>
         <a-sub-menu key="estimate-sheet" style="padding: 0;">
 					<span slot="title">
 						<span class="icon">
