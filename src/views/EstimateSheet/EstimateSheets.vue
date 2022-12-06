@@ -42,6 +42,7 @@
 				:columns="columns"
 				:data-source="data"
 				:pagination="{pageSize: pageSize,}"
+        rowKey="id"
 			>
 
 

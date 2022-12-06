@@ -26,6 +26,7 @@
 				:columns="columns"
 				:data-source="data"
 				:pagination="{pageSize: pageSize,}"
+        rowKey="id"
 			>
 
 				<template slot="id" slot-scope="id">#{{ id }}</template>
@@ -44,8 +45,8 @@
 					<span style="vertical-align: middle;">{{ order.status === 'completed' ? "완료됨" : "생산중" }}</span>
 				</template>
 
-				<template slot="showBtn" slot-scope="row">
-					<a-button type="primary" :data-id="row.key">
+				<template slot="showBtn" slot-scope="order">
+					<a-button type="primary" @click="showImages(order)">
 						도안보기
 					</a-button>
 				</template>
@@ -219,6 +220,14 @@
             // do nothing
           },
         });
+      },
+
+      showImages(order) {
+        const imageUrls = order.images.map( url => { return {src: url}});
+        this.$Pswp.open({
+          items: imageUrls,
+        });
+
       },
 
 			// Event listener for input change on table search field.
