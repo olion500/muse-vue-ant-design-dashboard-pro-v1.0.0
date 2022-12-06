@@ -96,7 +96,7 @@
 		{
 			title: '견적번호',
 			dataIndex: 'estimateNo',
-			sorter: (a, b) => stringSorter(a, b, 'esitmateNo'),
+			sorter: (a, b) => stringSorter(a, b, 'estimateNo'),
 			sortDirections: ['descend', 'ascend'],
 		},
 		{
