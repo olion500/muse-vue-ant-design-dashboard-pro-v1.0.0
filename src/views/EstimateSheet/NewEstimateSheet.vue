@@ -111,7 +111,8 @@ export default {
         url: this.url,
       };
 
-      axios.post('/estimate-sheets', data)
+      const url = `${process.env.VUE_APP_API_HOST}/estimate-sheets`;
+      axios.post(url, data)
           .then((res) => {
             if (res.status === 201) {
                this.$router.push('/estimate/estimate-sheet-list')
