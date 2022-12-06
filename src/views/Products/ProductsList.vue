@@ -33,10 +33,6 @@
           </a-col>
           <a-col :span="24" class="mb-24">
 
-            <!-- Payment Methods Card -->
-            <CardPaymentMethods></CardPaymentMethods>
-            <!-- Payment Methods Card -->
-
           </a-col>
         </a-row>
       </a-col>
