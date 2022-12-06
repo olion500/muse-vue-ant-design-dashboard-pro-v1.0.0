@@ -7,20 +7,6 @@
 
 	<div>
 
-		<!-- Orders List header -->
-		<a-row type="flex" :gutter="24">
-			<a-col :span="12" class="mb-24">
-				<a-button type="primary" hidden>NEW ORDER</a-button>
-			</a-col>
-			<a-col :span="12" class="mb-24 text-right">
-				<a-button @click="csvExport(csvData)" class="ml-15">
-					<i class="ni ni-archive-2 mr-5"></i> EXPORT CSV
-				</a-button>
-
-			</a-col>
-		</a-row>
-		<!-- / Orders List header -->
-
 		<!-- Orders List card -->
 		<a-card :bordered="false" class="header-solid mb-24" :bodyStyle="{padding: 0, paddingTop: '16px'}">
 
@@ -44,25 +30,19 @@
 
 				<template slot="id" slot-scope="id">#{{ id }}</template>
 
-				<template slot="status" slot-scope="status">
-    				<a-button v-if="status == 'Complete'" shape="circle" size="small" class="btn-status border-success mr-5">
+        <template slot="datetime" slot-scope="date">{{ formatDatetime(date) }}</template>
+
+        <template slot="product" slot-scope="product">{{ product.name }}</template>
+
+				<template slot="status" slot-scope="order">
+    				<a-button v-if="order.status === 'completed'" shape="circle" size="small" class="btn-status border-success mr-5">
 						<a-icon class="m-0 text-success" type="check" style="font-size: 10px;" />
 					</a-button>
-    				<a-button v-else-if="status == 'InProgress'" shape="circle" size="small" class="btn-status border-muted mr-5">
+    				<a-button v-else-if="order.status === 'in_progress'" @click="showCompleteConfirm(order.id)" shape="circle" size="small" class="btn-status border-muted mr-5">
 						<a-icon class="m-0 text-muted" type="undo" style="font-size: 10px;" />
 					</a-button>
-					<span style="vertical-align: middle;">{{ status === 'Complete' ? "완료됨" : "생산중" }}</span>
+					<span style="vertical-align: middle;">{{ order.status === 'completed' ? "완료됨" : "생산중" }}</span>
 				</template>
-
-				<template slot="customer" slot-scope="customer">
-					<div class="table-avatar-info">
-						<div class="avatar-info">
-							<p class="mb-0 text-dark">{{ customer.name }}</p>
-						</div>
-					</div>
-				</template>
-
-				<template slot="revenue" slot-scope="revenue">${{ revenue }}</template>
 
 				<template slot="showBtn" slot-scope="row">
 					<a-button type="primary" :data-id="row.key">
@@ -81,9 +61,12 @@
 </template>
 
 <script>
+	import axios from "axios";
+  import moment from "moment";
+  import { Modal } from "ant-design-vue";
 
-	// Sorting function for string attibutes.
-	let stringSorter = function(a, b, attr) {
+  // Sorting function for string attibutes.
+  let stringSorter = function(a, b, attr) {
 		if (a[attr] < b[attr])
 			return -1;
 		if ( a[attr] > b[attr])
@@ -95,7 +78,7 @@
 	const columns = [
 		{
 			title: 'ID',
-			dataIndex: 'key',
+			dataIndex: 'id',
 			sorter: (a, b) => a.key - b.key,
 			sortDirections: ['descend', 'ascend'],
 			scopedSlots: { customRender: 'id' },
@@ -105,25 +88,26 @@
 			dataIndex: 'createdAt',
 			sorter: (a, b) => a.date.length - b.date.length,
 			sortDirections: ['descend', 'ascend'],
+      scopedSlots: { customRender: 'datetime' },
 		},
     {
       title: '주문자명',
-      dataIndex: 'customer',
-      sorter(a, b, attr) {
-        if (a.customer.name < b.customer.name)
-          return -1;
-        if ( a.customer.name > b.customer.name)
-          return 1;
-        return 0;
-      },
+      dataIndex: 'name',
+      sorter: (a, b) => stringSorter(a, b, 'name'),
       sortDirections: ['descend', 'ascend'],
-      scopedSlots: { customRender: 'customer' },
+    },
+    {
+      title: '연락처',
+      dataIndex: 'phone',
+      sorter: (a, b) => stringSorter(a, b, 'phone'),
+      sortDirections: ['descend', 'ascend'],
     },
     {
       title: '상품명',
       dataIndex: 'product',
       sorter: (a, b) => stringSorter(a, b, 'product'),
       sortDirections: ['descend', 'ascend'],
+      scopedSlots: { customRender: 'product' }
     },
     {
       title: '도안보기',
@@ -144,7 +128,6 @@
     },
 		{
 			title: '생산완료',
-			dataIndex: 'status',
 			sorter: (a, b) => stringSorter(a, b, 'status'),
 			sortDirections: ['descend', 'ascend'],
 			scopedSlots: { customRender: 'status' },
@@ -154,147 +137,7 @@
       dataIndex: 'completedAt',
       sorter: (a, b) => a.date.length - b.date.length,
       sortDirections: ['descend', 'ascend'],
-    },
-	];
-
-	// Table rows
-	const data = [
-		{
-			"key": 10421,
-			"createdAt": "1 Nov, 10:20 AM",
-			"status": "Complete",
-			"customer": {
-				"name": "Orlando Imieto",
-				"avatar": "images/team-2.jpg",
-			},
-			"product": "Nike Sport V2",
-      "options": "앞: 베로, 410160011241118",
-      "purchase_site": "네이버자사몰",
-      "completedAt": "1 Nov, 10:20 AM",
-		},
-		{
-			"key": 10422,
-			"createdAt": "1 Nov, 10:53 AM",
-			"status": "Complete",
-			"customer": {
-				"name": "Alice Murinho",
-				"avatar": "images/team-1.jpg",
-			},
-			"product": "Valvet T-shirt",
-      "options": "앞: 베로, 410160011241118",
-      "purchase_site": "네이버자사몰",
-      "completedAt": "1 Nov, 10:20 AM",
-    },
-		{
-			"key": 10423,
-			"createdAt": "1 Nov, 11:13 AM",
-			"status": "InProgress",
-			"customer": {
-				"name": "Michael Mirra",
-			},
-			"product": "Leather Wallet",
-      "options": "앞: 베로, 410160011241118",
-      "purchase_site": "네이버자사몰",
-      "completedAt": "",
-    },
-		{
-			"key": 10424,
-			"createdAt": "1 Nov, 12:20 PM",
-			"status": "Complete",
-			"customer": {
-				"name": "Andrew Nichel",
-				"avatar": "images/team-3.jpg",
-			},
-			"product": "Bracelet Onu-Lino",
-      "options": "앞: 베로, 410160011241118",
-      "purchase_site": "네이버자사몰",
-      "completedAt": "1 Nov, 10:20 AM",
-    },
-		{
-			"key": 10426,
-			"createdAt": "1 Nov, 2:19 AM",
-			"status": "Complete",
-			"customer": {
-				"name": "Laur Gilbert",
-			},
-			"product": "Backpack Niver",
-      "options": "앞: 베로, 410160011241118",
-      "purchase_site": "네이버자사몰",
-      "completedAt": "1 Nov, 10:20 AM",
-    },
-		{
-			"key": 10427,
-			"createdAt": "1 Nov, 3:42 AM",
-			"status": "Complete",
-			"customer": {
-				"name": "Iryna Innda",
-			},
-			"product": "Adidas Vio",
-      "options": "앞: 베로, 410160011241118",
-      "purchase_site": "네이버자사몰",
-      "completedAt": "1 Nov, 10:20 AM",
-    },
-		{
-			"key": 10428,
-			"createdAt": "2 Nov, 9:32 AM",
-			"status": "Complete",
-			"customer": {
-				"name": "Arrias Liunda",
-			},
-			"product": "Airpods 2 Gen",
-      "options": "앞: 베로, 410160011241118",
-      "purchase_site": "네이버자사몰",
-      "completedAt": "1 Nov, 10:20 AM",
-    },
-		{
-			"key": 10429,
-			"createdAt": "2 Nov, 10:14 AM",
-			"status": "Complete",
-			"customer": {
-				"name": "Rugna Ilpio",
-				"avatar": "images/team-5.jpg",
-			},
-			"product": "Bracelet Warret",
-      "options": "앞: 베로, 410160011241118",
-      "purchase_site": "네이버자사몰",
-      "completedAt": "1 Nov, 10:20 AM",
-    },
-		{
-			"key": 10430,
-			"createdAt": "2 Nov, 12:56 PM",
-			"status": "InProgress",
-			"customer": {
-				"name": "Anna Landa",
-				"avatar": "images/ivana-squares.jpg",
-			},
-			"product": "Watter Bottle India",
-      "options": "앞: 베로, 410160011241118",
-      "purchase_site": "네이버자사몰",
-      "completedAt": "",
-    },
-		{
-			"key": 10431,
-			"createdAt": "2 Nov, 3:12 PM",
-			"status": "Complete",
-			"customer": {
-				"name": "Karl Innas",
-			},
-			"product": "Kitchen Gadgets",
-      "options": "앞: 베로, 410160011241118",
-      "purchase_site": "네이버자사몰",
-      "completedAt": "1 Nov, 10:20 AM",
-    },
-		{
-			"key": 10432,
-			"createdAt": "2 Nov, 5:12 PM",
-			"status": "Complete",
-			"customer": {
-				"name": "Oana Kilas",
-			},
-			"product": "Office Papers",
-      "options": "앞: 베로, 410160011241118",
-      "purchase_site": "네이버자사몰",
-      "completedAt": "1 Nov, 10:20 AM",
+      scopedSlots: { customRender: 'datetime' },
     },
 	];
 
@@ -306,7 +149,7 @@
 				columns,
 
 				// Table rows
-				data,
+				data: [],
 
 				// Table page size
 				pageSize: 10,
@@ -319,6 +162,18 @@
 
 			}
 		},
+    created() {
+      // watch the params of the route to fetch the data again
+      this.$watch(
+          () => this.$route.params,
+          () => {
+            this.fetchData()
+          },
+          // fetch the data when the view is created and the data is
+          // already being observed
+          { immediate: true }
+      )
+    },
 		computed: {
 
 			// CSV data array
@@ -335,6 +190,36 @@
 
 		},
 		methods: {
+
+      fetchData() {
+        const url = `${process.env.VUE_APP_API_HOST}/orders`;
+        axios.get(url)
+            .then((res) => {
+              this.data = res.data;
+            });
+      },
+
+      formatDatetime(date) {
+        if (!date) return '';
+        return moment(date).format('YY/MM/DD HH:mm');
+      },
+
+      showCompleteConfirm(productId) {
+        const self = this;
+        Modal.confirm({
+          title: () => '생산완료 하시겠습니까?',
+          onOk() {
+            const url = `${process.env.VUE_APP_API_HOST}/orders/${productId}/complete`;
+            axios.patch(url)
+                .then(() => {
+                  self.fetchData();
+                });
+          },
+          onCancel() {
+            // do nothing
+          },
+        });
+      },
 
 			// Event listener for input change on table search field.
 			onSearchChange() {
@@ -383,19 +268,4 @@
 </script>
 
 <style lang="scss" scoped>
-	.table-avatar-info {
-		display: flex;
-		align-items: center;
-	}
-	.table-avatar-info .ant-avatar {
-		margin-right: 8px;
-	}
-
-	// Using vuejs "Deep Selectors"
-	.table-avatar-info::v-deep .ant-avatar-string {
-		font-size: 12px;
-	}
-	.btn-status::v-deep .anticon {
-		line-height: 0;
-	}
 </style>
