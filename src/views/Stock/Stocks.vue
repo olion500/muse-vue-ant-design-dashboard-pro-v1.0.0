@@ -33,6 +33,16 @@
           <a-button type="primary" @click="openEditCount(option)">
             입력하기
           </a-button>
+          <a-modal
+              ref="modalRef"
+              v-model:visible="editModalVisible"
+              :wrap-style="{ overflow: 'hidden' }"
+              @ok="updateCount(selectedOption)"
+          >
+            <a-form-item class="mb-10" label="입고수량입력" :colon="false">
+              <a-input v-model="newCount"/>
+            </a-form-item>
+          </a-modal>
         </template>
 
         <template slot="status" slot-scope="option">
@@ -103,55 +113,6 @@
     },
 	];
 
-  const data =  [
-    {
-      "id": 65,
-      "name": "노랑",
-      "optionGroup": "배경색상",
-      "image": "http://3.39.241.52:3000/media/options/ae2473c1-7189-49b9-92a4-10440a8564fd.png",
-      "count": 0,
-      "createdAt": "2022-12-05T13:20:39.293Z",
-      "updatedAt": "2022-12-05T13:20:39.313Z"
-    },
-    {
-      "id": 66,
-      "name": "보라",
-      "optionGroup": "배경색상",
-      "image": "http://3.39.241.52:3000/media/options/d0fccedc-c1db-4f26-a60f-0ed77524ab6d.png",
-      "count": 0,
-      "createdAt": "2022-12-05T13:20:49.729Z",
-      "updatedAt": "2022-12-05T13:20:49.738Z"
-    },
-    {
-      "id": 67,
-      "name": "빨강",
-      "optionGroup": "배경색상",
-      "image": "http://3.39.241.52:3000/media/options/d3e14bc7-6bc3-402f-9cb1-9fe950635fc9.png",
-      "count": 0,
-      "createdAt": "2022-12-05T13:20:59.347Z",
-      "updatedAt": "2022-12-05T13:20:59.356Z"
-    },
-    {
-      "id": 68,
-      "name": "파랑",
-      "optionGroup": "배경색상",
-      "image": "http://3.39.241.52:3000/media/options/6f9612eb-4d3b-4bb6-9c4d-a79a34ebc493.png",
-      "count": 0,
-      "createdAt": "2022-12-05T13:21:11.950Z",
-      "updatedAt": "2022-12-05T13:21:11.959Z"
-    },
-    {
-      "id": 69,
-      "name": "흰색",
-      "optionGroup": "배경색상",
-      "image": "http://3.39.241.52:3000/media/options/f18576ad-fa8e-4977-92ca-bef2acc27151.png",
-      "count": 0,
-      "createdAt": "2022-12-05T13:21:21.094Z",
-      "updatedAt": "2022-12-05T13:21:21.103Z"
-    }
-  ];
-
-
 	export default {
 		data() {
 			return {
@@ -162,7 +123,7 @@
 				columns,
 
 				// Table rows
-				data,
+				data: [],
 
 				// Table page size
 				pageSize: 10,
@@ -172,6 +133,10 @@
 
 				// Table's selected rows
         selectedRowKeys: [],
+
+        editModalVisible: false,
+        selectedOption: null,
+        newCount: '',
 
 			}
 		},
@@ -212,16 +177,32 @@
                 for (const option of group.options) {
                   this.data.push({
                     ...option,
-                    'id': option.id.toString(),
+                    'id': option.id,
                     'optionGroup': group.name
                   });
                 }
               }
+              console.log(this.data);
             });
       },
 
       openEditCount(option) {
+        this.editModalVisible = true;
+        this.selectedOption = option;
+      },
 
+      updateCount(option) {
+        const self = this;
+        const url = `${process.env.VUE_APP_API_HOST}/options/${option.id}`;
+
+        axios.patch(url, {
+          count: Number(this.newCount)
+        })
+        .then((res) => {
+          this.editModalVisible = false;
+          this.selectedOption = null;
+          self.fetchData();
+        });
       },
 
 			// Event listener for input change on table search field.
