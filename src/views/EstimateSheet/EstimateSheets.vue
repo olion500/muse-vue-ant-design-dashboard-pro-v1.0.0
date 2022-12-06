@@ -7,6 +7,18 @@
 
 	<div>
 
+    <!--    Estimate rotate rate -->
+    <a-card :bordered="false" class="header-solid mb-24" :bodyStyle="{padding: 0, paddingTop: '16px'}">
+      <template #title>
+        <h6>회전정보</h6>
+      </template>
+      <template v-for="item in rotateRates">
+        <li>{{ item.name }}: {{ item.days }}일</li>
+        <li class="divider" role="presentation"></li>
+      </template>
+    </a-card>
+    <!--    / Estimate rotate rate -->
+
 		<!-- Estimate Sheet List header -->
 		<a-row type="flex" :gutter="24">
 			<a-col :span="12" class="mb-24">
@@ -135,6 +147,8 @@
 		data() {
 			return {
 
+        rotateRates: [],
+
 				// Table columns
 				columns,
 
@@ -157,7 +171,8 @@
       this.$watch(
           () => this.$route.params,
           () => {
-            this.fetchData()
+            this.fetchRotateData();
+            this.fetchData();
           },
           // fetch the data when the view is created and the data is
           // already being observed
@@ -185,6 +200,14 @@
         axios.get(url)
             .then((res) => {
               this.data = res.data;
+            });
+      },
+
+      fetchRotateData() {
+        const url = `${process.env.VUE_APP_API_HOST}/orders/rotate-rate`;
+        axios.get(url)
+            .then((res) => {
+              this.rotateRates = res.data;
             });
       },
 
