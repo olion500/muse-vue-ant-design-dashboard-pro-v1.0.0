@@ -45,6 +45,8 @@
         rowKey="id"
 			>
 
+        <template slot="datetime" slot-scope="date">{{ formatDatetime(date) }}</template>
+
 
 				<template slot="estimateSheet" slot-scope="row">
 					<a-button type="primary" @click="openEstimateSheet(row.url)">
@@ -66,6 +68,7 @@
 
 <script>
 	import axios from "axios";
+  import moment from "moment/moment";
 
   // Sorting function for string attibutes.
   let stringSorter = function(a, b, attr) {
@@ -95,6 +98,7 @@
       dataIndex: 'estimatedAt',
       sorter: (a, b) => stringSorter(a, b, 'estimatedAt'),
       sortDirections: ['descend', 'ascend'],
+      scopedSlots: { customRender: 'datetime'}
     },
     {
       title: '상호',
@@ -182,6 +186,11 @@
             .then((res) => {
               this.data = res.data;
             });
+      },
+
+      formatDatetime(date) {
+        if (!date) return '';
+        return moment(date).format('YY/MM/DD HH:mm');
       },
 
 			// Event listener for input change on table search field.
