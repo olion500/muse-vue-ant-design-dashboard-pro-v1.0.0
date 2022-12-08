@@ -37,6 +37,17 @@ let routes = [
 		component: () => import('../views/Products/ProductsList.vue'),
 	},
 	{
+		path: '/products/options-list',
+		name: 'Option List',
+		layout: "dashboard",
+		meta: {
+			title: 'Option List',
+			sidebarMap: ['option', 'option-list'],
+			breadcrumbs: ['Options', 'Option List'],
+		},
+		component: () => import('../views/Products/OptionsList.vue'),
+	},
+	{
 		path: '/estimate/estimate-sheet-list',
 		name: 'Estimate Sheet List',
 		layout: "dashboard",

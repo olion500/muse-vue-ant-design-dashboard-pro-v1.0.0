@@ -49,6 +49,13 @@
               </router-link>
             </a-menu-item>
           </a-menu-item-group>
+          <a-menu-item-group>
+            <a-menu-item>
+              <router-link to="/products/options-list">
+                <span class="label">옵션관리</span>
+              </router-link>
+            </a-menu-item>
+          </a-menu-item-group>
         </a-sub-menu>
         <a-sub-menu key="stock" style="padding: 0;">
 					<span slot="title">

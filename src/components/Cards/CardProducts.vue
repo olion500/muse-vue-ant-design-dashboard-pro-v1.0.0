@@ -3,9 +3,9 @@
   <!-- Product Card -->
   <a-card :bordered="false" class="header-solid h-full" :bodyStyle="{paddingTop: 0, paddingBottom: '16px' }">
     <template #title>
-      <h6 class="font-semibold m-0">상품선택</h6>
+      <h6 class="font-semibold m-0">{{ title }}</h6>
     </template>
-    <template slot="extra" class="mb-0">
+    <template v-if="isAddButtonVisible" slot="extra" class="mb-0">
       <a-button type="primary">
         추가하기
       </a-button>
@@ -22,7 +22,7 @@
           수정
         </a-button>
         <a-list-item-meta
-            :title="item.title"
+            :title="item.name"
         ></a-list-item-meta>
       </a-list-item>
     </a-list>
@@ -39,6 +39,8 @@ export default ({
       type: Array,
       default: () => [],
     },
+    title: '',
+    isAddButtonVisible: false,
   },
   emits: ['selected'],
   data() {
