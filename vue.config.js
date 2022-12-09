@@ -1,18 +1,5 @@
 module.exports = {
 	runtimeCompiler: true,
-	devServer: {
-		proxy: {
-			'^/kpiLv1': {
-				target: "http://www.ssf-kpi.kr:8080/",
-			},
-			'^/kpiLv2': {
-				target: "http://www.ssf-kpi.kr:8080/",
-			},
-			'^/kpiLv3': {
-				target: "http://www.ssf-kpi.kr:8080/",
-			},
-		},
-	},
 	chainWebpack: config => {
 		config
 			.plugin('html')
