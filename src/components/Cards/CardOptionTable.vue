@@ -10,21 +10,11 @@
 
       <a-row :gutter="[24]">
         <a-col>
-          <!-- Table search -->
-          <div class="mx-25">
-            <a-row type="flex" :gutter="24">
-              <a-col :span="24" class="text-right">
-                <a-input-search placeholder="input search text" style="max-width: 200px;" v-model="query" @change="onSearchChange" />
-              </a-col>
-            </a-row>
-          </div>
-          <!-- / Table search -->
-
           <!-- Stock table -->
           <a-table class="mt-20"
                    :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
                    :columns="columns"
-                   :data-source="data"
+                   :data-source="options"
                    :pagination="{pageSize: pageSize,}"
                    rowKey="id"
           >
@@ -34,11 +24,14 @@
                 삭제하기
               </a-button>
               <a-modal
+                  title="삭제"
                   ref="modalRef"
                   v-model:visible="deleteModalVisible"
                   :wrap-style="{ overflow: 'hidden' }"
                   @ok="deleteOption(selectedOption)"
-              />
+              >
+              <p>삭제하시겠습니까?</p>
+              </a-modal>
             </template>
 
           </a-table>
@@ -52,6 +45,8 @@
 
 <script>
 // Sorting function for string attibutes.
+import axios from "axios";
+
 let stringSorter = function(a, b, attr) {
   if (a[attr] < b[attr])
     return -1;
@@ -77,7 +72,7 @@ const columns = [
   {
     title: '삭제',
     sortDirections: ['descend', 'ascend'],
-    scopedSlots: { customRender: 'editCount'},
+    scopedSlots: { customRender: 'action'},
   },
 ];
 
@@ -86,14 +81,14 @@ export default {
     optionGroup: {
       type: Object,
     },
+    options: {
+      type: Array,
+    }
   },
   data() {
     return {
       // Table columns
       columns,
-
-      // Table rows
-      data: this.optionData,
 
       // Table page size
       pageSize: 10,
@@ -108,11 +103,7 @@ export default {
       selectedOption: null,
     };
   },
-  computed: {
-    optionData() {
-      return this.optionGroup.options;
-    },
-  },
+
   methods: {
     openDeleteModal(option) {
       this.deleteModalVisible = true;
@@ -120,26 +111,14 @@ export default {
     },
 
     deleteOption(option) {
-      console.log(option);
-    },
-
-    // Event listener for input change on table search field.
-    onSearchChange() {
-      if( this.query.length > 0 ) {
-        this.data = data.filter( (row) => {
-          for( const key in row ) {
-            if( row[ key ]
-                .toString()
-                .toLowerCase()
-                .includes( this.query.trim().toLowerCase() ) )
-              return true;
-          }
-          return false;
-        }) ;
-      }
-      else {
-        this.data = data ;
-      }
+      const url = `${process.env.VUE_APP_API_HOST}/options/${option.id}`;
+      axios.delete(url)
+          .then((res) => {
+            console.log(res);
+            if (res.status === 200) {
+              this.$router.go(0);
+            }
+          });
     },
 
     // Event listener for table row selection change.
