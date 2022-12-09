@@ -171,7 +171,9 @@ export default {
              }
             ]
       };
-      axios.post('/kpiLv1/kpiLv1InsertTst', data).then((res) => {
+      const url = `${process.env.VUE_APP_API_HOST}/system/kpi1`;
+
+      axios.post(url, data).then((res) => {
         console.log(res.status);
       });
     },
@@ -227,7 +229,9 @@ export default {
           },
         ]
       };
-      axios.post('/kpiLv2/kpiLv2InsertTst', data).then((res) => {
+      const url = `${process.env.VUE_APP_API_HOST}/system/kpi2`;
+
+      axios.post(url, data).then((res) => {
         console.log(res.status);
       });
     },
@@ -289,7 +293,9 @@ export default {
           },
         ]
       };
-      axios.post('/kpiLv3/kpiLv3InsertTst', data).then((res) => {
+      const url = `${process.env.VUE_APP_API_HOST}/system/kpi3`;
+
+      axios.post(url, data).then((res) => {
         console.log(res.status);
       });
     },

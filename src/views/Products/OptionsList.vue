@@ -15,8 +15,8 @@
         <CardProduct
             :data="optionData"
             title="옵션선택"
-            isAddButtonVisible=false
-            v-on:selected="(item) => selectProduct(item)"
+            :isAddButtonVisible='false'
+            v-on:selected="(item) => selectOptionGroup(item)"
         ></CardProduct>
         <!-- / Products Card -->
 
@@ -29,8 +29,8 @@
         <a-row type="flex" :gutter="24">
           <a-col :span="24" class="mb-24">
 
-            <CardProductBasicInfo
-                :product="this.selectedProduct"></CardProductBasicInfo>
+            <CardOptionTable
+                :optionGroup="this.selectedOptionGroup"></CardOptionTable>
 
           </a-col>
           <a-col :span="24" class="mb-24">
@@ -49,7 +49,7 @@
 <script>
 
 import CardProduct from "../../components/Cards/CardProducts"
-import CardProductBasicInfo from "../../components/Cards/CardProductBasicInfo"
+import CardOptionTable from "../../components/Cards/CardOptionTable"
 
 const optionData = [
   {
@@ -364,7 +364,7 @@ const optionData = [
   }
 ];
 
-let selectedProduct = {
+let selectedOptionGroup = {
   id: 0,
   name: '',
   options: [],
@@ -373,17 +373,17 @@ let selectedProduct = {
 export default ({
   components: {
     CardProduct,
-    CardProductBasicInfo,
+    CardOptionTable,
   },
   data() {
     return {
       optionData,
-      selectedProduct
+      selectedOptionGroup
     }
   },
   methods: {
-    selectProduct(item) {
-      this.selectedProduct = item;
+    selectOptionGroup(item) {
+      this.selectedOptionGroup = item;
     }
   }
 })

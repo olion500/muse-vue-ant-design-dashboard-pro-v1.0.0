@@ -46,13 +46,8 @@
 
 <script>
 
-import CardCredit from "../../components/Cards/CardCredit"
-import WidgetSalary from "../../components/Widgets/WidgetSalary"
-import CardPaymentMethods from "../../components/Cards/CardPaymentMethods"
 import CardProduct from "../../components/Cards/CardProducts"
 import CardProductBasicInfo from "../../components/Cards/CardProductBasicInfo"
-import CardBillingInfo from "../../components/Cards/CardBillingInfo"
-import CardTransactions from "../../components/Cards/CardTransactions"
 
 // "Product" list data.
 const productData = [
@@ -73,13 +68,8 @@ let selectedProduct = {
 
 export default ({
   components: {
-    CardCredit,
-    WidgetSalary,
-    CardPaymentMethods,
     CardProduct,
     CardProductBasicInfo,
-    CardBillingInfo,
-    CardTransactions,
   },
   data() {
     return {
