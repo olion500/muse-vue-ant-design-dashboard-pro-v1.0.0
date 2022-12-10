@@ -2,7 +2,16 @@
   <!-- Card Option table card -->
   <a-card :bordered="false" id="basic-info" class="header-solid mb-24">
     <template #title>
-      <h5 class="mb-0 font-semibold">{{ optionGroup.name || '옵션을 선택해주세요' }}</h5>
+      <a-row justify="space-between">
+        <a-col :span="16">
+          <h5 class="mb-0 font-semibold">{{ optionGroup.name || '옵션을 선택해주세요' }}</h5>
+        </a-col>
+        <a-col v-if="optionGroup.id !== 0" :span="1">
+          <router-link :to="{ name: 'New option', params: { id: optionGroup.id } }" custom v-slot="{ navigate }">
+            <a-button type="primary" @click="navigate">추가하기</a-button>
+          </router-link>
+        </a-col>
+      </a-row>
     </template>
     <a-form
         :hideRequiredMark="true"
