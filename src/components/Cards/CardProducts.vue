@@ -6,9 +6,9 @@
       <h6 class="font-semibold m-0">{{ title }}</h6>
     </template>
     <template v-if="isAddButtonVisible" slot="extra" class="mb-0">
-      <a-button type="primary">
-        추가하기
-      </a-button>
+      <router-link :to="addLink" custom v-slot="{ navigate }">
+        <a-button type="primary" @click="navigate">추가하기</a-button>
+      </router-link>
     </template>
     <a-list
         class="invoice-list"
@@ -41,6 +41,7 @@ export default ({
     },
     title: '',
     isAddButtonVisible: false,
+    addLink: '',
   },
   emits: ['selected'],
   data() {

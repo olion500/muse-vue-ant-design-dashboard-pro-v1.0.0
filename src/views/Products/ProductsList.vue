@@ -16,6 +16,7 @@
             :data="productData"
             title="상품선택"
             :isAddButtonVisible='true'
+            addLink="/products/new-product"
             v-on:selected="(item) => selectProduct(item)"
         ></CardProduct>
         <!-- / Products Card -->

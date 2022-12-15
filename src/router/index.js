@@ -37,8 +37,8 @@ let routes = [
 		component: () => import('../views/Products/ProductsList.vue'),
 	},
 	{
-		path: '/products/new-option',
-		name: 'New Option',
+		path: '/products/new-product',
+		name: 'New Product',
 		layout: "dashboard",
 		meta: {
 			title: 'New Product',
