@@ -27,8 +27,8 @@
 
       <!-- Product Info Column -->
       <a-col :span="24" :md="16">
-        <a-row type="flex" :gutter="24">
-          <a-col :span="24" class="mb-24">
+        <a-row>
+          <a-col :span="24">
 
             <CardProductBasicInfo
               :product="this.selectedProduct"></CardProductBasicInfo>
@@ -37,6 +37,10 @@
           <a-col :span="24" class="mb-24">
 
           </a-col>
+        </a-row>
+
+        <a-row>
+          <CardProductOptions></CardProductOptions>
         </a-row>
       </a-col>
       <!-- / Product Info Column -->
@@ -51,6 +55,7 @@
 
 import CardProduct from "../../components/Cards/CardProducts"
 import CardProductBasicInfo from "../../components/Cards/CardProductBasicInfo"
+import CardProductOptions from "../../components/Cards/CardProductOptions"
 import axios from "axios";
 
 let selectedProduct = {
@@ -62,6 +67,7 @@ export default ({
   components: {
     CardProduct,
     CardProductBasicInfo,
+    CardProductOptions,
   },
   created() {
     // watch the params of the route to fetch the data again
