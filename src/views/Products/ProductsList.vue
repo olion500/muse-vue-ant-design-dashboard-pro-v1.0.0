@@ -14,6 +14,8 @@
         <!-- Products Card -->
         <CardProduct
             :data="productData"
+            title="상품선택"
+            :isAddButtonVisible='true'
             v-on:selected="(item) => selectProduct(item)"
         ></CardProduct>
         <!-- / Products Card -->
@@ -48,18 +50,7 @@
 
 import CardProduct from "../../components/Cards/CardProducts"
 import CardProductBasicInfo from "../../components/Cards/CardProductBasicInfo"
-
-// "Product" list data.
-const productData = [
-  {
-    title: "산책와펜",
-    description: "이것이 설명"
-  },
-  {
-    title: "편안한인식표",
-    description: "이것은 설명 2"
-  },
-];
+import axios from "axios";
 
 let selectedProduct = {
   title: '',
@@ -71,13 +62,32 @@ export default ({
     CardProduct,
     CardProductBasicInfo,
   },
+  created() {
+    // watch the params of the route to fetch the data again
+    this.$watch(
+        () => this.$route.params,
+        () => {
+          this.fetchData();
+        },
+        // fetch the data when the view is created and the data is
+        // already being observed
+        { immediate: true }
+    )
+  },
   data() {
     return {
-      productData,
+      productData: [],
       selectedProduct
     }
   },
   methods: {
+    fetchData() {
+      const url = `${process.env.VUE_APP_API_HOST}/products`;
+      axios.get(url)
+          .then((res) => {
+            this.productData= res.data;
+          });
+    },
     selectProduct(item) {
       this.selectedProduct = item;
     }

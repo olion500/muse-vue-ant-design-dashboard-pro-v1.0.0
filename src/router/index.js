@@ -37,6 +37,17 @@ let routes = [
 		component: () => import('../views/Products/ProductsList.vue'),
 	},
 	{
+		path: '/products/new-option',
+		name: 'New Option',
+		layout: "dashboard",
+		meta: {
+			title: 'New Product',
+			sidebarMap: ['product', 'new-product'],
+			breadcrumbs: ['Products', 'New-Product'],
+		},
+		component: () => import('../views/Products/NewProduct.vue'),
+	},
+	{
 		path: '/products/options-list',
 		name: 'Option List',
 		layout: "dashboard",

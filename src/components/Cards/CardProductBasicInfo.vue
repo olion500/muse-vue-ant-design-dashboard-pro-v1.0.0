@@ -10,7 +10,7 @@
       <a-row :gutter="[24]">
         <a-col :span="16">
           <a-form-item class="mb-10" label="상품명" :colon="false">
-            <a-input :value="product.title" ></a-input>
+            <a-input :value="product.name" ></a-input>
           </a-form-item>
           <a-form-item class="mb-10" label="상품설명" :colon="false">
             <a-textarea :value="product.description" :rows="6" />
@@ -18,7 +18,7 @@
         </a-col>
         <a-col :span="6">
           <a-form-item class="mb-10" label="사진" :colon="false">
-            <a-avatar :size="200" shape="square" src="images/face-1.jpg" />
+            <a-avatar :size="200" shape="square" :src="product.image" />
             <template>
               <a-upload
                   name="file"
