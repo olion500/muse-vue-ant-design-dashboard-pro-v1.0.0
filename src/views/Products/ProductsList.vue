@@ -31,7 +31,8 @@
           <a-col :span="24">
 
             <CardProductBasicInfo
-              :product="this.selectedProduct"></CardProductBasicInfo>
+              :product="this.selectedProduct">
+            </CardProductBasicInfo>
 
           </a-col>
           <a-col :span="24" class="mb-24">
@@ -40,7 +41,8 @@
         </a-row>
 
         <a-row>
-          <CardProductOptions></CardProductOptions>
+          <CardProductOptions
+            :product="this.selectedProduct"></CardProductOptions>
         </a-row>
       </a-col>
       <!-- / Product Info Column -->
@@ -96,7 +98,12 @@ export default ({
           });
     },
     selectProduct(item) {
-      this.selectedProduct = item;
+      const self = this;
+      const url = `${process.env.VUE_APP_API_HOST}/products/${item.id}`;
+      axios.get(url)
+          .then((res) => {
+            self.selectedProduct = res.data;
+          });
     }
   }
 })
