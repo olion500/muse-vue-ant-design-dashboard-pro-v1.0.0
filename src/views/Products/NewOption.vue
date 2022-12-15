@@ -27,12 +27,10 @@
               <a-form-item class="mb-10" label="사진" :colon="false">
                 <template>
                   <a-upload
-                      v-model:file-list="fileList"
                       name="avatar"
                       list-type="picture-card"
                       class="avatar-uploader"
                       :show-upload-list="false"
-                      action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                       :before-upload="beforeUpload"
                       @change="handleImageChange"
                   >
@@ -43,13 +41,6 @@
                       <div class="ant-upload-text">Upload</div>
                     </div>
                   </a-upload>
-<!--                  <a-upload-->
-<!--                      name="file"-->
-<!--                      :multiple="false"-->
-<!--                      action="https://www.mocky.io/v2/5cc8019d300000980a055e76"-->
-<!--                      :before-upload="beforeUpload"-->
-<!--                      @remove="handleRemove">-->
-<!--                  </a-upload>-->
                 </template>
               </a-form-item>
             </a-col>
@@ -75,7 +66,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      fileList: undefined,
+      file: undefined,
       loading: false,
       imageUrl: undefined,
 
@@ -90,16 +81,6 @@ export default {
     // Handles input validation after submission.
     handleSubmit(e) {
       e.preventDefault();
-      const data = {
-        estimateNo: this.estimateNo,
-        name: this.name,
-        estimatedAt: this.estimatedAt,
-        companyName: this.companyName,
-        companyId: this.companyId,
-        companyCEO: this.companyCEO,
-        totalCost: Number(this.totalCost),
-        url: this.url,
-      };
 
       const optionId = this.$router.currentRoute.params.id;
       const url = `${process.env.VUE_APP_API_HOST}/options/${optionId}`;
@@ -127,17 +108,11 @@ export default {
         this.loading = true;
         return;
       }
-      if (info.file.status === 'done') {
-        this.file = info.file.originFileObj;
-        // Get this url from response in real world.
-        this.getBase64(info.file.originFileObj, (base64Url) => {
-          this.imageUrl = base64Url;
-          this.loading = false;
-        });
-      }
-      if (info.file.status === 'error') {
+      this.file = info.file.originFileObj;
+      this.getBase64(info.file.originFileObj, (base64Url) => {
+        this.imageUrl = base64Url;
         this.loading = false;
-      }
+      });
     },
 
     beforeUpload(file) {
