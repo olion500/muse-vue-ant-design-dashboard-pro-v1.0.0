@@ -4,8 +4,8 @@
     <a-tree
         v-model:checkedKeys="checkedKeys"
         checkable
+        defaultExpandAll
         :tree-data="treeData"
-        defaultExpandAll="true"
     >
       <template #title="{ title, key }">
         <span>{{ title }}</span>
