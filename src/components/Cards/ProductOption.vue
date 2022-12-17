@@ -12,44 +12,44 @@
         <span>{{ title }}</span>
       </template>
 
-      <template #switcherIcon="{ dataRef, defaultIcon }">
-        <span style="display: none;"></span>
-      </template>
     </a-tree>
   </a-col>
 </template>
 
 <script>
-const treeData = [
-  {
-    title: 'parent 0',
-    key: '0',
-  },
-  {
-    title: 'parent 1',
-    key: '1',
-  },
-  {
-    title: 'parent 2',
-    key: '2',
-  },
-  {
-    title: 'parent 3',
-    key: '3',
-  },
-  {
-    title: 'parent 4',
-    key: '4',
-  },
-];
+import axios from "axios";
 
 export default {
   props: {
     option: {},
+    bus: {
+      type: Object,
+      required: true,
+    }
+  },
+  watch: {
+    option: function (newOption) {
+      this.checkedKeys = newOption.enabledOptions;
+    }
+  },
+  created() {
+    this.bus.$on('save', () => {
+      const url = `${process.env.VUE_APP_API_HOST}/products/options/${this.option.id}`;
+      const data = {
+        "consume": 1,
+        "enabled": true,
+        "enabledOptions": this.checkedKeys,
+      };
+
+      axios.patch(url, data)
+          .then((res) => {
+            console.log('product option updated');
+          });
+    });
   },
   data() {
     return {
-      checkedKeys: [],
+      checkedKeys: this.option.enabledOptions,
     };
   },
   computed: {

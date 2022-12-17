@@ -44,7 +44,9 @@
 
         <a-row>
           <CardProductOptions
-            :product="this.selectedProduct"></CardProductOptions>
+            :product="this.selectedProduct"
+            :bus="this.bus"
+          ></CardProductOptions>
         </a-row>
 
         <a-row v-if="this.selectedProduct.title !== ''">
@@ -67,6 +69,7 @@ import CardProduct from "../../components/Cards/CardProducts"
 import CardProductBasicInfo from "../../components/Cards/CardProductBasicInfo"
 import CardProductOptions from "../../components/Cards/CardProductOptions"
 import axios from "axios";
+import Vue from "vue";
 
 let selectedProduct = {
   title: '',
@@ -99,6 +102,8 @@ export default ({
       // edited data
       basicInfo: {},
 
+      // the bus to save data
+      bus: new Vue(),
     }
   },
   methods: {
@@ -124,6 +129,8 @@ export default ({
           .then((res) => {
             self.fetchData();
           });
+
+      this.bus.$emit("save", {});
     }
   }
 })

@@ -10,6 +10,7 @@
           <a-col :md="6" class="mb-24">
             <ProductOption
               :option="option"
+              :bus="bus"
             ></ProductOption>
           </a-col>
         </template>
@@ -28,6 +29,10 @@ export default {
     product: {
       type: Object,
     },
+    bus: {
+      type: Object,
+      required: true,
+    }
   },
   data() {
     return {
