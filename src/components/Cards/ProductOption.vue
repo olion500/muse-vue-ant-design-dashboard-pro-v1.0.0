@@ -1,6 +1,11 @@
 <template>
   <a-col>
-    <h5 class="mb-0 font-semibold">{{ this.option.option.name }}</h5>
+    <a-row class="mb-24">
+      <a-checkbox v-model:checked="enabled">
+        <h5 class="font-semibold"> {{ this.option.option.name }} </h5>
+      </a-checkbox>
+    </a-row>
+
     <a-tree
         v-model:checkedKeys="checkedKeys"
         checkable
@@ -36,6 +41,7 @@ export default {
     option: function (newOption) {
       this.checkedKeys = newOption.enabledOptions;
       this.consume = newOption.consume;
+      this.enabled = newOption.enabled;
     }
   },
   created() {
@@ -43,7 +49,7 @@ export default {
       const url = `${process.env.VUE_APP_API_HOST}/products/options/${this.option.id}`;
       const data = {
         "consume": this.consume,
-        "enabled": true,
+        "enabled": this.enabled,
         "enabledOptions": this.checkedKeys,
       };
 
@@ -57,6 +63,7 @@ export default {
     return {
       checkedKeys: this.option.enabledOptions,
       consume: this.option.consume,
+      enabled: this.option.enabled,
     };
   },
   computed: {
@@ -74,5 +81,9 @@ export default {
 <style lang="scss">
 .ant-tree-switcher {
   display: none !important;
+}
+
+h5 {
+  display: inline;
 }
 </style>
