@@ -31,7 +31,9 @@
           <a-col :span="24">
 
             <CardProductBasicInfo
-              :product="this.selectedProduct">
+              :product.sync="this.selectedProduct"
+              @basicinfo="(data) => this.basicInfo = data"
+            >
             </CardProductBasicInfo>
 
           </a-col>
@@ -43,6 +45,12 @@
         <a-row>
           <CardProductOptions
             :product="this.selectedProduct"></CardProductOptions>
+        </a-row>
+
+        <a-row v-if="this.selectedProduct.title !== ''">
+          <a-col :offset="20">
+            <a-button type="primary" @click="save">저장하기</a-button>
+          </a-col>
         </a-row>
       </a-col>
       <!-- / Product Info Column -->
@@ -86,7 +94,11 @@ export default ({
   data() {
     return {
       productData: [],
-      selectedProduct
+      selectedProduct,
+
+      // edited data
+      basicInfo: {},
+
     }
   },
   methods: {
@@ -103,6 +115,14 @@ export default ({
       axios.get(url)
           .then((res) => {
             self.selectedProduct = res.data;
+          });
+    },
+    save() {
+      const self = this;
+      const url = `${process.env.VUE_APP_API_HOST}/products/${this.selectedProduct.id}`;
+      axios.patch(url, this.basicInfo)
+          .then((res) => {
+            self.fetchData();
           });
     }
   }

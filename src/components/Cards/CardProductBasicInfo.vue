@@ -10,10 +10,10 @@
       <a-row :gutter="[24]">
         <a-col :span="16">
           <a-form-item class="mb-10" label="상품명" :colon="false">
-            <a-input :value="product.name" ></a-input>
+            <a-input v-model="name" @input="emitBasicInfo"></a-input>
           </a-form-item>
           <a-form-item class="mb-10" label="상품설명" :colon="false">
-            <a-textarea :value="product.description" :rows="6" />
+            <a-textarea v-model="description" @input="emitBasicInfo" :rows="6" />
           </a-form-item>
         </a-col>
         <a-col :span="6">
@@ -34,11 +34,26 @@ export default {
       type: Object,
     },
   },
+  watch: {
+    product: function (newProduct) {
+      this.name = newProduct.name;
+      this.description = newProduct.description
+    }
+  },
   data() {
     return {
+      name: '',
+      description: '',
     };
   },
+  emits: ['basicinfo'],
   methods: {
+    emitBasicInfo() {
+      this.$emit('basicinfo', {
+        name: this.name,
+        description: this.description
+      });
+    },
   },
 };
 </script>
