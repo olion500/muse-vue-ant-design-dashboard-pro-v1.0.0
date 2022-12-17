@@ -5,7 +5,7 @@
       <h5 class="mb-0 font-semibold">Options</h5>
     </template>
     <template>
-      <a-row>
+      <a-row type="flex" :gutter="12">
         <template v-for="option in product.productOptions">
           <a-col :md="6" class="mb-24">
             <ProductOption

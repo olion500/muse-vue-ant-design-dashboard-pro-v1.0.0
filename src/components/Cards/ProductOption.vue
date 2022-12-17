@@ -13,6 +13,11 @@
       </template>
 
     </a-tree>
+
+    <a-form-item class="mb-10 mt-10" label="1 구매시 사용량" :colon="false">
+      <a-input v-model="consume"></a-input>
+    </a-form-item>
+
   </a-col>
 </template>
 
@@ -30,13 +35,14 @@ export default {
   watch: {
     option: function (newOption) {
       this.checkedKeys = newOption.enabledOptions;
+      this.consume = newOption.consume;
     }
   },
   created() {
     this.bus.$on('save', () => {
       const url = `${process.env.VUE_APP_API_HOST}/products/options/${this.option.id}`;
       const data = {
-        "consume": 1,
+        "consume": this.consume,
         "enabled": true,
         "enabledOptions": this.checkedKeys,
       };
@@ -50,6 +56,7 @@ export default {
   data() {
     return {
       checkedKeys: this.option.enabledOptions,
+      consume: this.option.consume,
     };
   },
   computed: {
