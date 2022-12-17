@@ -95,10 +95,14 @@
     },
     {
       title: '일평균소진',
+      dataIndex: 'dailyConsumeAvg',
+      sorter: (a, b) => a - b,
       sortDirections: ['descend', 'ascend'],
     },
     {
       title: '소진예상일',
+      dataIndex: 'expectedFinalConsume',
+      sorter: (a, b) => a - b,
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -152,37 +156,18 @@
           { immediate: true }
       )
     },
-		computed: {
-
-			// CSV data array
-			csvData() {
-				return this.data.map(item => ({
-					"Id": "%23" + item.key,
-					"Date": item.date,
-					"Status": item.status,
-					"Customer": item.customer.name,
-					"Product": item.product,
-					"Revenue": "$" + item.revenue,
-				}));
-			},
-		},
 		methods: {
 
       fetchData() {
-        const url = `${process.env.VUE_APP_API_HOST}/options`;
+        const url = `${process.env.VUE_APP_API_HOST}/orders/stocks`;
         axios.get(url)
             .then((res) => {
-              this.data = [];
-              for (const group of res.data) {
-                for (const option of group.options) {
-                  this.data.push({
-                    ...option,
-                    'id': option.id,
-                    'optionGroup': group.name
-                  });
+              this.data = res.data.map((option) => {
+                return {
+                  ...option,
+                  optionGroup: option.optionGroup.name,
                 }
-              }
-              console.log(this.data);
+              });
             });
       },
 
